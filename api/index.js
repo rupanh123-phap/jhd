@@ -33,6 +33,13 @@ const MANIFEST = {
   ]
 };
 
+function setCorsHeaders(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Max-Age', '86400');
+}
+
 function decodeEntities(encodedString) {
   if (!encodedString) return '';
   let str = encodedString;
@@ -73,9 +80,7 @@ async function getBaseUrl() {
 }
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', '*');
+  setCorsHeaders(res);
   
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -141,7 +146,10 @@ export default async function handler(req, res) {
         }
       });
 
-      if (!response.ok) return res.status(200).json({ metas: [] });
+      if (!response.ok) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        return res.status(200).json({ metas: [] });
+      }
 
       const html = await response.text();
       const metas = [];
