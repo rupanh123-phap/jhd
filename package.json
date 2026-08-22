@@ -1,0 +1,9 @@
+{
+  "name": "stremio-javhd-vercel",
+  "version": "1.0.0",
+  "description": "Stremio JavHD Addon on Vercel",
+  "main": "api/index.js",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
