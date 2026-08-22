@@ -36,7 +36,6 @@ const MANIFEST = {
   ]
 };
 
-// Middleware CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -86,23 +85,19 @@ async function getBaseUrl() {
   return 'https://javhdz.cam/';
 }
 
-// Route gốc thông báo
 app.get('/', (req, res) => {
   res.send(`<h1>${MANIFEST.name}</h1><p>Install: <a href="/manifest.json">manifest.json</a></p>`);
 });
 
-// Manifest Route
 app.get('/manifest.json', (req, res) => {
   res.json(MANIFEST);
 });
 
-// Catalog Route
 app.get(['/catalog/movie/javhd_catalog.json', '/catalog/movie/javhd_catalog/:extra*.json'], async (req, res) => {
   try {
     const baseUrl = await getBaseUrl();
     const query = req.query;
     
-    // Parse extra parameters từ path hoặc query của Stremio
     let genreName = 'Trending';
     let searchQuery = query.search || '';
     let skipVal = parseInt(query.skip || '0', 10);
@@ -182,7 +177,6 @@ app.get(['/catalog/movie/javhd_catalog.json', '/catalog/movie/javhd_catalog/:ext
   }
 });
 
-// Meta Route
 app.get('/meta/movie/:id.json', async (req, res) => {
   try {
     const baseUrl = await getBaseUrl();
@@ -233,7 +227,6 @@ app.get('/meta/movie/:id.json', async (req, res) => {
   }
 });
 
-// Stream Route
 app.get('/stream/movie/:id.json', async (req, res) => {
   try {
     const baseUrl = await getBaseUrl();
